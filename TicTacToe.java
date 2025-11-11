@@ -14,6 +14,9 @@ public class TicTacToe {
     |   |   |   |
     -------------
      */
+
+    // Przerobić diagram sekwencyjny z draw.io na Mermaid
+
     static char[][] board = {
             {' ', ' ', ' '},
             {' ', ' ', ' '},
@@ -27,10 +30,32 @@ public class TicTacToe {
 
         System.out.println("=== TIC TAC TOE ===");
         printBoard(board);
-        move(currentPlayer,scanner, gameEnded);
+
 
         while (!gameEnded) {
-            hasWon(currentPlayer);
+            int row = scanner.nextInt();
+            int col = scanner.nextInt();
+
+            // waliadacja czy w zakresie
+            if (row > 3 || col > 3 && row < 0 || col < 0) {
+                System.out.println("Invalid move!");
+                continue;
+            }
+
+            // waliadacja czy nie jest zajęte
+
+
+            board[row][col] = currentPlayer;
+            printBoard(board);
+
+            if (hasWon(currentPlayer)){
+                gameEnded = true;
+            } else {
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            }
+            // move(currentPlayer, scanner, gameEnded);
+
+
         }
 
         scanner.close();
@@ -39,10 +64,10 @@ public class TicTacToe {
     // Print the current board
     public static void printBoard(char[][] board) {
         System.out.println("-------------");
-        for (int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             System.out.print("| ");
-            for (int j=0; j<3; j++){
-                System.out.print(board[i][j] +" | ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
             }
             System.out.println();
             System.out.println("-------------");
@@ -52,28 +77,30 @@ public class TicTacToe {
 
     // Check if a player has won
     public static boolean hasWon(char currentPlayer) {
-        int count = 0;
-        for (int i=0; i<3; i++){
-            for (int j=0; j<3; j++){
-                if (board[i][j] == currentPlayer){
-                    count++;
-                    if (count == 3){
-                        System.out.println("The winner is " + currentPlayer);
-                    }
-                }
+
+        // 1 któryś z rzędów ma taki sam znak w 3 polach
+        // 2 któraś z kulm ma taki sam znak w 3 polach
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) || (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer)
+            ) {
+                return true;
             }
         }
-        return true;
+        // 3 któraś z 2 przekątnych ma taki sam znak w 3 polach
+        if ((board[0][2]== currentPlayer && board[1][1]== currentPlayer && board[2][0]== currentPlayer)||(board[0][0]== currentPlayer && board[1][1]== currentPlayer && board[2][2]== currentPlayer)){
+            return true;
+        }
+        return false;
     }
 
     // Check if the board is full
     public static boolean isDraw(char currentPlayer) {
         int count = 0;
-        for (int i=0; i<3; i++){
-            for (int j=0; j<3; j++){
-                if (board[i][j] == currentPlayer){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == currentPlayer) {
                     count++;
-                    if (count == 9){
+                    if (count == 9) {
                         System.out.println("It's a draw! ");
                     }
                 }
@@ -89,7 +116,7 @@ public class TicTacToe {
             System.out.println(currentPlayer + " Your move!");
             int row = scanner.nextInt();
             int col = scanner.nextInt();
-            if (row>3 || col>3 && row<0 || col<0){
+            if (row > 3 || col > 3 && row < 0 || col < 0) {
                 System.out.println("Invalid move!");
             }
             board[row][col] = currentPlayer;
@@ -97,10 +124,10 @@ public class TicTacToe {
             printBoard(board);
             hasWon(currentPlayer);
             isDraw(currentPlayer);
-            if(lastMove == 'X'){
+            if (lastMove == 'X') {
                 currentPlayer = 'O';
             }
-            if (lastMove == 'O'){
+            if (lastMove == 'O') {
                 currentPlayer = 'X';
             }
         }
