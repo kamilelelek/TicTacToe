@@ -41,7 +41,9 @@ public class TicTacToe {
                 System.out.println("Invalid move!");
                 continue;
             }
-
+            if (board[row][col] != ' ') {
+                System.out.println("Invalid move!");
+            }
             // waliadacja czy nie jest zajęte
 
 
@@ -50,11 +52,15 @@ public class TicTacToe {
 
             if (hasWon(currentPlayer)){
                 gameEnded = true;
+                System.out.println("Congratulations!");
             } else {
                 currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
             }
             // move(currentPlayer, scanner, gameEnded);
-
+            if (isDraw(currentPlayer)){
+                gameEnded = true;
+                System.out.println("draw");
+            }
 
         }
 
@@ -95,14 +101,10 @@ public class TicTacToe {
 
     // Check if the board is full
     public static boolean isDraw(char currentPlayer) {
-        int count = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] == currentPlayer) {
-                    count++;
-                    if (count == 9) {
-                        System.out.println("It's a draw! ");
-                    }
+                if (board[i][j] == ' ') {
+                    return false;
                 }
             }
         }
